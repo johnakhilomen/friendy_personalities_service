@@ -1,0 +1,15 @@
+
+services:
+    # Build web service from the directory ./web
+    # and bind to port 5000
+    web:
+        build: ./web
+        ports:
+            - "5000:5000"
+        # means that this web service is dependent on the db service
+        # so we have to build the db service before the web service
+        links: 
+            - db
+    # Build a service for mongo
+    db:
+        build: ./db
