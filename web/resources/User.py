@@ -1,7 +1,8 @@
+from flask.wrappers import Response
 from flask_restful import Api, Resource
 from flask import jsonify, request
 from dappers.Dappers import UserDapper
-import json
+import json, sys
 from bson import json_util
 
 # tenderResults,
@@ -36,8 +37,9 @@ class User(Resource):
         # print([doc for doc in UserDapper.user_collection().find()])
         users = [doc for doc in UserDapper.user_collection().find()]
         # users = UserDapper.user_collection().find()
-        data = [json.dumps(item, default=json_util.default) for item in users]
-        return jsonify(data)
+        resp = Response(json.dumps({'data': users}, default=json_util.default),
+                mimetype='application/json')
+        return resp
 
     def post(self):
         dict = request.get_json()
